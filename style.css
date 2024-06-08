@@ -173,6 +173,7 @@ footer {
     }
 
     #cover {
+        margin-left: 0%;
         width: 80%; /* 모바일에서 이미지 너비 조정 */
         margin-bottom: 20px; /* 이미지와 정보 사이의 간격 */
     }
