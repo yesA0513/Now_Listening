@@ -1,0 +1,194 @@
+/* 기본적인 페이지 스타일 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+body {
+    font-family: Pretendard;
+    background-color: #ffffff;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+#title {
+    padding-top: 3%;
+    padding-left: 6%;
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+#cover-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5%;
+    width: 80%; /* 컨테이너 너비 설정 */
+    margin: 0 auto; /* 가로 중앙 정렬 */
+}
+
+#cover {
+    width: 40%; /* 앨범 이미지 너비 설정 */
+}
+
+#cover img {
+    width: 100%;
+    border-radius: 10%;
+}
+
+#info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 20px; /* 이미지와 정보 사이의 간격 */
+    width: 60%; /* 정보 섹션 너비 설정 */
+}
+
+#artist {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+#song {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 20px; /* 노래 제목과 버튼 사이의 간격 */
+}
+
+/* 버튼 스타일 */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+}
+
+/* 버튼 아이콘 스타일 */
+#button img {
+    width: 50px;
+    height: 50px;
+}
+
+/* 링크 스타일 */
+a {
+    text-decoration: none;
+    color: #e94141;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Footer 스타일 */
+footer {
+    background-color: #e9e9e9;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+#footer-content a {
+    color: #727272;
+    margin: 0 15px;
+    font-size: 1rem;
+}
+
+#footer-content a:hover {
+    text-decoration: underline;
+}
+
+/* 아이콘 스타일 */
+#footer-content i {
+    margin-right: 8px;
+}
+
+/*라이트/다크모드 적용*/
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #333;
+        color: #fff;
+    }
+
+    #title {
+        color: #fff;
+    }
+
+    #cover img {
+        border: 1px solid #333;
+    }
+
+    #artist {
+        color: #fff;
+    }
+
+    #song {
+        color: #fff;
+    }
+
+    a {
+        color: #e94141;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    footer {
+        background-color: #232323;
+        color: #fff;
+    }
+
+    #footer-content a {
+        color: #979797;
+    }
+
+    #footer-content a:hover {
+        text-decoration: underline;
+    }
+
+    #footer-content i {
+        color: #979797;
+    }
+}
+
+/* 모바일 레이아웃 */
+@media (max-width: 768px) {
+    #title {
+        text-align: center; /* 모바일에서 제목 가운데 정렬 */
+        padding: 0;
+        margin-top: 10%;
+        margin-bottom: 10%;
+        font-size: 2.5rem;
+    }
+
+    #cover-container {
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+    }
+
+    #cover {
+        width: 80%; /* 모바일에서 이미지 너비 조정 */
+        margin-bottom: 20px; /* 이미지와 정보 사이의 간격 */
+    }
+
+    #info {
+        margin: 0%;
+        width: 90%; /* 모바일에서 정보 섹션 너비 조정 */
+        align-items: center; /* 정보 센터 정렬 */
+        text-align: center; /* 텍스트 센터 정렬 */
+    }
+
+    #artist {
+        font-size: 1.5rem; /* 모바일에서 폰트 크기 조정 */
+    }
+
+    #song {
+        font-size: 2.5rem; /* 모바일에서 노래 제목 폰트 크기 조정 */
+    }
+}
