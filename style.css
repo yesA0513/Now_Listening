@@ -1,10 +1,15 @@
 /* 기본적인 페이지 스타일 */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
+html {
+    height: 100%;
+}
+
 body {
     font-family: Pretendard;
-    background-color: #ffffff;
-    color: #333;
+    background: linear-gradient(to bottom, var(--background-color), var(--background-color-dark));
+    color: var(--text-color);
+    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -21,7 +26,6 @@ body {
     justify-content: center;
     align-items: center;
     padding: 5%;
-    width: 80%; /* 컨테이너 너비 설정 */
     margin: 0 auto; /* 가로 중앙 정렬 */
 }
 
@@ -30,8 +34,8 @@ body {
 }
 
 #cover img {
-    width: 100%;
-    border-radius: 10%;
+    width: 90%;
+    border-radius: 20px;
 }
 
 #info {
@@ -54,19 +58,22 @@ body {
     margin-bottom: 20px; /* 노래 제목과 버튼 사이의 간격 */
 }
 
-/* 버튼 스타일 */
 button {
-    background: none;
+    background-color: var(--text-color);
     border: none;
-    cursor: pointer;
-    outline: none;
-    padding: 0;
-}
-
-/* 버튼 아이콘 스타일 */
-#button img {
+    border-radius: 50%;
     width: 50px;
     height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+button svg {
+    width: 28px;
+    height: 28px;
+    fill: var(--background-color);
 }
 
 /* 링크 스타일 */
@@ -84,8 +91,7 @@ a:hover {
 
 /* Footer 스타일 */
 footer {
-    background-color: #e9e9e9;
-    color: #fff;
+    background-color: var(--footer-color);
     text-align: center;
     padding: 20px 0;
     position: fixed;
@@ -94,7 +100,7 @@ footer {
 }
 
 #footer-content a {
-    color: #727272;
+    color: var(--footer-text-color);
     margin: 0 15px;
     font-size: 1rem;
 }
@@ -106,55 +112,6 @@ footer {
 /* 아이콘 스타일 */
 #footer-content i {
     margin-right: 8px;
-}
-
-/*라이트/다크모드 적용*/
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #333;
-        color: #fff;
-    }
-
-    #title {
-        color: #fff;
-    }
-
-    #cover img {
-        border: 1px solid #333;
-    }
-
-    #artist {
-        color: #fff;
-    }
-
-    #song {
-        color: #fff;
-    }
-
-    a {
-        color: #e94141;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    footer {
-        background-color: #232323;
-        color: #fff;
-    }
-
-    #footer-content a {
-        color: #979797;
-    }
-
-    #footer-content a:hover {
-        text-decoration: underline;
-    }
-
-    #footer-content i {
-        color: #979797;
-    }
 }
 
 /* 모바일 레이아웃 */

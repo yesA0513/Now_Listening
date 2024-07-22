@@ -33,6 +33,38 @@ document.addEventListener("DOMContentLoaded", () => {
             imgElement.src = resizeCover; // 수정된 이미지 URL 설정
             imgElement.crossOrigin = "Anonymous"; // CORS 문제 방지
 
+            // 이미지 로드 완료 후 색상 추출
+            imgElement.onload = function () {
+                const colorThief = new ColorThief();
+                let palette = colorThief.getPalette(imgElement, 2); // 2개의 색상 추출
+
+                // 색상의 밝기 계산 함수
+                const getBrightness = (color) => (color[0] * 299 + color[1] * 587 + color[2] * 114) / 1000;
+
+                // 밝기에 따라 색상 정렬 (밝은 색이 첫 번째)
+                palette.sort((a, b) => getBrightness(b) - getBrightness(a));
+
+                const bgColor = palette[0];
+                const darkerBgColor = bgColor.map(c => Math.max(0, c - 50)); // 약간 어둡게 만듦
+                const footerColor = palette[1];
+
+                // CSS 변수 설정
+                document.documentElement.style.setProperty('--background-color', `rgb(${bgColor.join(',')})`);
+                document.documentElement.style.setProperty('--background-color-dark', `rgb(${darkerBgColor.join(',')})`);
+                document.documentElement.style.setProperty('--footer-color', `rgb(${footerColor.join(',')})`);
+
+                // 텍스트 색상 설정
+                const textColor = getBrightness(bgColor) > 125 ? 'black' : 'white';
+                const footerTextColor = getBrightness(footerColor) > 125 ? 'grey' : 'lightgrey';
+                document.documentElement.style.setProperty('--text-color', textColor);
+                document.documentElement.style.setProperty('--footer-text-color', footerTextColor);
+
+                // 버튼 배경색과 아이콘 색상 업데이트
+                const button = document.querySelector('#button button');
+                button.style.backgroundColor = textColor;
+                button.querySelector('svg').style.fill = `rgb(${bgColor.join(',')})`;
+            };
+
             // 이미지 요소를 cover ID를 가진 div에 추가
             var coverDiv = document.getElementById("cover");
             coverDiv.innerHTML = ""; // 기존 내용을 지움 (필요 시)
@@ -45,21 +77,20 @@ document.addEventListener("DOMContentLoaded", () => {
             // 버튼 요소 생성
             var buttonDiv = document.getElementById("button");
             var button = document.createElement("button");
-            var imgIcon = document.createElement("img");
-            imgIcon.src = prefersDarkScheme.matches ? "./img/play_dark.png" : "./img/play.png"; // 초기 재생 아이콘 이미지 경로 설정
-            imgIcon.alt = "재생"; // 대체 텍스트 설정
-            button.appendChild(imgIcon);
+            var svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            var useElement = document.createElementNS("http://www.w3.org/2000/svg", "use");
+            useElement.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#play-icon");
+            svgIcon.appendChild(useElement);
+            button.appendChild(svgIcon);
 
             // 버튼 클릭 이벤트 설정
             button.addEventListener("click", function () {
                 if (audioElement.paused) {
                     audioElement.play();
-                    imgIcon.src = prefersDarkScheme.matches ? "./img/pause_dark.png" : "./img/pause.png"; // 재생 중 아이콘 이미지 경로 설정
-                    imgIcon.alt = "일시정지"; // 대체 텍스트 설정
+                    useElement.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#pause-icon");
                 } else {
                     audioElement.pause();
-                    imgIcon.src = prefersDarkScheme.matches ? "./img/play_dark.png" : "./img/play.png"; // 일시정지 중 아이콘 이미지 경로 설정
-                    imgIcon.alt = "재생"; // 대체 텍스트 설정
+                    useElement.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#play-icon");
                 }
             });
 
