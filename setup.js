@@ -122,7 +122,7 @@ function displayMainSong(song) {
         const bgColor = palette[0];
         const darkerBgColor = bgColor.map(c => Math.max(0, c - 50)); // 약간 어둡게 만듦
         const footerColor = palette[1];
-        const bgColorRGB = `rgb(${bgColor.join(',')})`;
+        const bgColorRGB = `rgb(${darkerBgColor.join(',')})`;
 
         document.addEventListener('DOMContentLoaded', () => {
             // 배경색 적용
