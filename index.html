@@ -7,7 +7,6 @@
     <title>Now Listening</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <meta http-equiv="refresh" content="60">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <script src="setup.js"></script>
 </head>
@@ -20,17 +19,27 @@
         <symbol id="pause-icon" viewBox="0 0 24 24">
           <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
         </symbol>
-      </svg>
+    </svg>
 
-    <div id="title">지금 듣는 중</div>
-    <div id="cover-container">
-        <div id="cover"></div>
-        <div id="info">
-            <div id="artist"></div>
-            <div id="song"></div>
-            <div id="button"></div>
+    <div id="main-content">
+        <div id="title">지금 듣는 중</div>
+        <div id="cover-container">
+            <div id="cover"></div>
+            <div id="info">
+                <div id="artist"></div>
+                <div id="song"></div>
+                <div id="button"></div>
+            </div>
         </div>
     </div>
+
+    <div id="history-container">
+        <h2>최근 재생 기록</h2>
+        <div id="history-content"></div>
+        <button id="show-more">더보기</button>
+    </div>
+
+    <div class="animated-background"></div>
 
     <footer>
         <div id="footer-content">
