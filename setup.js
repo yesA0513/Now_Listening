@@ -115,6 +115,17 @@ function displayMainSong(song) {
         const darkerBgColor = bgColor.map(c => Math.max(0, c - 50)); // 약간 어둡게 만듦
         const footerColor = palette[1];
 
+        document.addEventListener('DOMContentLoaded', () => {
+            // 배경색 적용
+            document.getElementById('background').style.backgroundColor = bgColor;
+            
+            // 어두운 배경색 적용
+            document.getElementById('darkback').style.backgroundColor = darkerBgColor;
+            
+            // 푸터 색상 적용
+            document.getElementById('footer').style.backgroundColor = footerColor;
+        });
+
         // CSS 변수 설정
         document.documentElement.style.setProperty('--background-color', `rgb(${bgColor.join(',')})`);
         document.documentElement.style.setProperty('--background-color-dark', `rgb(${darkerBgColor.join(',')})`);
