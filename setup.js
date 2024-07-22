@@ -84,6 +84,14 @@ function fetchAndUpdateMusic() {
         });
 }
 
+function updateStatusBarColor(color) {
+    // Android
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', color);
+    
+    // iOS
+    document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').setAttribute('content', 'black-translucent');
+}
+
 function displayMainSong(song) {
     var artistName = song.attributes.artistName;
     var songName = song.attributes.name;
@@ -114,6 +122,7 @@ function displayMainSong(song) {
         const bgColor = palette[0];
         const darkerBgColor = bgColor.map(c => Math.max(0, c - 50)); // 약간 어둡게 만듦
         const footerColor = palette[1];
+        const bgColorRGB = `rgb(${bgColor.join(',')})`;
 
         document.addEventListener('DOMContentLoaded', () => {
             // 배경색 적용
@@ -125,6 +134,8 @@ function displayMainSong(song) {
             // 푸터 색상 적용
             document.getElementById('footer').style.backgroundColor = footerColor;
         });
+
+        updateStatusBarColor(bgColorRGB);
 
         // CSS 변수 설정
         document.documentElement.style.setProperty('--background-color', `rgb(${bgColor.join(',')})`);
