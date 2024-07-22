@@ -235,10 +235,10 @@ body {
         background-position: 30% 40%;
     }
     65% {
-        background-position: 80% 50%;
+        background-position: 80% 10%;
     }
     80% {
-        background-position: 10% 30%;
+        background-position: 100% 100%;
     }
     100% {
         background-position: 40% 60%;
