@@ -1,5 +1,9 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
+#cover img, #artist, #song {
+    transition: opacity 0.5s ease-in-out;
+}
+
 html, body {
     min-height: 100%;
     margin: 0;
@@ -363,6 +367,7 @@ body {
 
     footer {
         padding: 15px 0;
+        position: unset;
     }
 
     #footer-content a {
@@ -495,6 +500,7 @@ body {
 
     footer {
         padding: 15px 0;
+        position: unset;
     }
 
     #footer-content a {
