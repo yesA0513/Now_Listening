@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchAndUpdateMusic();
 
     // 60초마다 업데이트 확인
-    setInterval(fetchAndUpdateMusic, 30000);
+    setInterval(fetchAndUpdateMusic, 10000);
 
     fetch("https://yuntae.in/api/music/recent/noa")
         .then(res => res.json())
