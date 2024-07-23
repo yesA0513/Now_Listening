@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 60초마다 업데이트 확인
     setInterval(fetchAndUpdateMusic, 30000);
 
-    fetch("https://simple-proxy.taein.workers.dev/?destination=https://yuntae.in/api/music/recent/noa")
+    fetch("https://yuntae.in/api/music/recent/noa")
         .then(res => res.json())
         .then(data => {
             // 메인 컨텐츠 (첫 번째 노래)
