@@ -35,12 +35,12 @@ body {
     display: flex;
     justify-content: left;
     align-items: left;
-    padding: 5%;
-    margin-top: 5%;
+    padding: 7%;
 }
 
 #cover {
     width: 50%;
+    max-width: 700px;
 }
 
 #cover img {
@@ -59,12 +59,12 @@ body {
 }
 
 #artist {
-    font-size: 2rem;
-    font-weight: 500;
+    font-size: 2.5rem;
+    font-weight: 400;
 }
 
 #song {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 900;
     margin-bottom: 20px;
 }
@@ -302,12 +302,12 @@ body {
     }
 
     #artist {
-        font-size: 1.5rem;
+        font-size: 1.7rem;
         margin-bottom: 5px;
     }
 
     #song {
-        font-size: 2.2rem;
+        font-size: 2.7rem;
         margin-bottom: 15px;
     }
 
@@ -380,6 +380,7 @@ body {
     }
 }
 
+/* 태블릿 레이아웃 */
 @media (min-width: 601px) and (max-width: 1024px) {
     html, body {
         width: 100%;
@@ -435,12 +436,12 @@ body {
     }
 
     #artist {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         margin-bottom: 5px;
     }
 
     #song {
-        font-size: 2.2rem;
+        font-size: 3rem;
         margin-bottom: 15px;
     }
 
@@ -521,5 +522,67 @@ body {
 
     #history-container:hover {
         opacity: 1;
+    }
+}
+
+@media (min-width: 2100px) {
+    #cover-container {
+        margin-top: 3%;
+    }
+
+    #artist {
+        font-size: 3rem;
+        font-weight: 400;
+    }
+    
+    #song {
+        font-size: 4.5rem;
+        font-weight: 900;
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 2900px) {
+    #title {
+        font-size: 5rem;
+    }
+
+    #cover {
+        width: 50%;
+        max-width: 1200px;
+    }
+
+    #cover-container {
+        margin-top: 2%;
+    }
+
+    #artist {
+        font-size: 5rem;
+        font-weight: 400;
+    }
+    
+    #song {
+        font-size: 7rem;
+        font-weight: 900;
+        margin-bottom: 40px;
+    }
+
+    button {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+    }
+
+    button svg {
+        width: 45px;
+        height: 45px;
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--text-color); opacity: 0.7;
+        font-size: 1.7rem;
+        margin-top: 2rem;
+        margin-bottom: 5rem;
     }
 }
