@@ -27,6 +27,7 @@ body {
     grid-template-rows: repeat(3, 250px);
     gap: 20px;
     transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
+    touch-action: none;
 }
 
 /* 모달이 활성화될 때 그리드에 적용될 흐림 효과 */

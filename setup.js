@@ -8,6 +8,8 @@ let playPauseBtn = null;
 function formatDuration(ms){const minutes=Math.floor(ms/60000);const seconds=((ms%60000)/1000).toFixed(0);return minutes+":"+(seconds<10?'0':'')+seconds}
 function formatDate(dateString){const[year,month,day]=dateString.split('-');return`${year}년 ${month}월 ${day}일`}
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchMusicData();
     // 모달 닫기 이벤트 설정
@@ -16,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 마우스 패닝 효과 ---
     const grid = document.getElementById('album-grid');
-    const panIntensityX = 300; 
+    const panIntensityX = 400; 
     const panIntensityY = 200; 
     document.body.addEventListener('mousemove', (e) => {
         if (!document.getElementById('song-detail-modal').classList.contains('hidden')) return;
@@ -26,6 +28,69 @@ document.addEventListener('DOMContentLoaded', () => {
         const panX = -mouseX * panIntensityX;
         const panY = -mouseY * panIntensityY;
         grid.style.transform = `translate(${panX}px, ${panY}px)`;
+    });
+
+        let isPanning = false;
+    let startX, startY;
+    let initialTranslateX = 0, initialTranslateY = 0;
+
+    // 현재 그리드의 transform 값에서 translate 값을 추출하는 함수
+    const getTranslateValues = (element) => {
+        const style = window.getComputedStyle(element);
+        const matrix = new DOMMatrix(style.transform);
+        return {
+            x: matrix.m41,
+            y: matrix.m42
+        };
+    };
+
+    grid.addEventListener('touchstart', (e) => {
+        // 모달이 열려있을 때는 작동하지 않음
+        if (!document.getElementById('song-detail-modal').classList.contains('hidden')) return;
+        
+        isPanning = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        
+        const currentTranslate = getTranslateValues(grid);
+        initialTranslateX = currentTranslate.x;
+        initialTranslateY = currentTranslate.y;
+
+        // 패닝 중에는 부드러운 전환 효과를 잠시 제거하여 즉각적인 반응을 유도
+        grid.style.transition = 'none'; 
+    });
+
+    grid.addEventListener('touchmove', (e) => {
+        if (!isPanning) return;
+
+        // 브라우저의 기본 스크롤 동작을 막음
+        e.preventDefault(); 
+
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        
+        const deltaX = currentX - startX;
+        const deltaY = currentY - startY;
+
+        // 초기 위치에서 터치 이동 거리를 더해 새로운 위치 계산
+        const newX = initialTranslateX + deltaX;
+        const newY = initialTranslateY + deltaY;
+
+        grid.style.transform = `translate(${newX}px, ${newY}px)`;
+    });
+
+    grid.addEventListener('touchend', () => {
+        if (!isPanning) return;
+        isPanning = false;
+        
+        // 패닝이 끝나면 다시 부드러운 전환 효과를 복원
+        grid.style.transition = 'transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease';
+    });
+
+    grid.addEventListener('touchcancel', () => {
+        if (!isPanning) return;
+        isPanning = false;
+        grid.style.transition = 'transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease';
     });
 });
 
