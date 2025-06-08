@@ -16,6 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.modal-close-btn').addEventListener('click', closeSongDetailModal);
     document.querySelector('.modal-backdrop').addEventListener('click', closeSongDetailModal);
 
+    // ▼▼▼ 여기에 ESC 키로 모달 닫기 이벤트 추가 ▼▼▼
+    document.addEventListener('keydown', (event) => {
+        // 모달이 열려있고, 눌린 키가 'Escape'일 때
+        if (!document.getElementById('song-detail-modal').classList.contains('hidden') && event.key === 'Escape') {
+            closeSongDetailModal();
+        }
+    });
+    // ▲▲▲ 여기까지 코드 추가 ▲▲▲
+
     // --- 마우스 패닝 효과 ---
     const grid = document.getElementById('album-grid');
     const panIntensityX = 450; 
@@ -214,7 +223,6 @@ function closeSongDetailModal() {
         currentAudio.pause();
         currentAudio.src = '';
     }
-    document.querySelector('.modal-backdrop').style.backgroundColor = '#D9D9E2';
     document.getElementById('album-grid').classList.remove('blurred');
     document.getElementById('song-detail-modal').classList.add('hidden');
 }
