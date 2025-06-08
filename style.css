@@ -15,6 +15,18 @@ body {
     min-height: 100vh;
 }
 
+/* 앨범 아이템이 나타날 때의 애니메이션 정의 */
+@keyframes item-appear {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* 아래쪽에서 시작 */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* 제자리로 이동 */
+    }
+}
+
 /* =================================================================
    앨범 격자 스타일
 ================================================================= */
@@ -42,6 +54,11 @@ body {
     border-radius: 8px;
     overflow: hidden;
     background-color: #333;
+
+    /* ▼▼▼ 애니메이션 적용을 위한 코드 추가 ▼▼▼ */
+    opacity: 0; /* 시작 시 투명하게 */
+    /* 애니메이션: 이름, 지속시간, 타이밍함수, 종료상태 */
+    animation: item-appear 0.5s ease-out forwards;
 }
 
 .album-item img {
@@ -323,8 +340,8 @@ body {
     #album-grid {
     display: grid;
     /* 10x3 그리드 레이아웃 설정 */
-    grid-template-columns: repeat(5, 150px);
-    grid-template-rows: repeat(6, 150px);
+    grid-template-columns: repeat(4, 180px);
+    grid-template-rows: repeat(7, 180px);
     gap: 20px;
     transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
 }

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 마우스 패닝 효과 ---
     const grid = document.getElementById('album-grid');
-    const panIntensityX = 400; 
+    const panIntensityX = 450; 
     const panIntensityY = 200; 
     document.body.addEventListener('mousemove', (e) => {
         if (!document.getElementById('song-detail-modal').classList.contains('hidden')) return;
@@ -113,13 +113,35 @@ async function fetchMusicData() {
 function renderInitialGrid() {
     const grid = document.getElementById('album-grid');
     grid.innerHTML = '';
-    allSongs.forEach(song => {
-        const item = createAlbumItem(song);
+    allSongs.forEach((song, index) => { // forEach 루프에서 'index'를 함께 가져옵니다.
+        const item = createAlbumItem(song, index); // createAlbumItem 함수에 index를 전달합니다.
         grid.appendChild(item);
     });
 }
-function createAlbumItem(song){const item=document.createElement('div');item.className='album-item';const artworkUrl=song.attributes.artwork.url.replace('{w}x{h}','400x400');const songName=song.attributes.name;const artistName=song.attributes.artistName;const img=document.createElement('img');img.src=artworkUrl;img.alt=`${songName} - ${artistName}`;item.appendChild(img);const overlay=document.createElement('div');overlay.className='album-overlay';overlay.innerHTML=`<p class="overlay-song">${songName}</p><p class="overlay-artist">${artistName}</p>`;item.appendChild(overlay);item.addEventListener('click',()=>showSongDetailModal(song));return item}
 
+// createAlbumItem 함수가 index를 파라미터로 받도록 수정합니다.
+function createAlbumItem(song, index) {
+    const item = document.createElement('div');
+    item.className = 'album-item';
+    const artworkUrl = song.attributes.artwork.url.replace('{w}x{h}', '400x400');
+    const songName = song.attributes.name;
+    const artistName = song.attributes.artistName;
+    const img = document.createElement('img');
+    img.src = artworkUrl;
+    img.alt = `${songName} - ${artistName}`;
+    item.appendChild(img);
+    const overlay = document.createElement('div');
+    overlay.className = 'album-overlay';
+    overlay.innerHTML = `<p class="overlay-song">${songName}</p><p class="overlay-artist">${artistName}</p>`;
+    item.appendChild(overlay);
+    item.addEventListener('click', () => showSongDetailModal(song));
+
+    // ▼▼▼ 여기에 애니메이션 지연시간 설정 코드 추가 ▼▼▼
+    // 각 아이템마다 50ms (0.05초) 씩 지연시간을 줍니다.
+    item.style.animationDelay = `${index * 50}ms`;
+
+    return item;
+}
 
 // --- 모달 제어 함수 ---
 function showSongDetailModal(song) {
