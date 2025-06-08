@@ -1,61 +1,53 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Now Listening</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
-    <script src="setup.js"></script>
-    <!-- Android 상태바 색상 설정 -->
-    <meta name="theme-color" content="#FFFFFF">
-    
-    <!-- iOS 상태바 설정 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" href="style.css">
+    <meta property="og:title" content="Now Listening">
+    <meta property="og:description" content="@yesA0513">
+    <meta property="og:image" content="img/Preview.png">
 </head>
-
 <body>
+
     <svg style="display: none;">
-        <symbol id="play-icon" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z"/>
+        <symbol id="icon-play" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
         </symbol>
-        <symbol id="pause-icon" viewBox="0 0 24 24">
-          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+        <symbol id="icon-pause" viewBox="0 0 24 24">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
         </symbol>
     </svg>
 
-    <div id="main-content">
-        <div id="title">지금 듣는 중</div>
-        <div id="cover-container">
-            <div id="cover"></div>
-            <div id="info">
-                <div id="artist"></div>
-                <div id="song"></div>
-                <div id="button"></div>
+    <div id="album-grid"></div>
+
+    <div id="song-detail-modal" class="hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content-new">
+            <button class="modal-close-btn">&times;</button>
+            
+            <div class="modal-left">
+                <img id="modal-cover" src="" alt="Album Cover" crossorigin="anonymous">
+            </div>
+
+            <div class="modal-right">
+                <p id="modal-artist-name"></p>
+                <h2 id="modal-song-title"></h2>
+                <p id="modal-album-info"></p>
+
+                <div class="player-controls">
+                    <audio id="modal-audio"></audio>
+                    <button id="play-pause-btn">
+                        <svg width="24" height="24"><use href="#icon-play"></use></svg>
+                    </button>
+                    <a id="modal-apple-music-link" href="#" target="_blank">Apple Music에서 보기</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="history-container">
-        <h2>최근 재생 기록</h2>
-        <div id="history-content"></div>
-        <button id="show-more">더보기</button>
-    </div>
-
-    <div class="animated-background"></div>
-
-    <footer>
-        <div id="footer-content">
-            <a href="https://github.com/yesa0513/now_listening" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-            <a href="https://blog.noa.kim" target="_blank">Blog</a>
-        </div>
-    </footer>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <script src="setup.js"></script>
 </body>
-
 </html>

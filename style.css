@@ -1,588 +1,335 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
-
-#cover img, #artist, #song {
-    transition: opacity 0.5s ease-in-out;
-}
-
-html, body {
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-}
+/* =================================================================
+   기본 바디 스타일
+================================================================= */
 
 body {
+    background-color: #121212;
+    margin: 0;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+    /* 콘텐츠를 수직/수평 중앙에 배치합니다. */
     display: flex;
-    font-family: Pretendard;
-    background: linear-gradient(45deg, var(--background-color), var(--background-color-dark), var(--footer-color));
-    background-attachment: fixed;
-    color: var(--text-color);
-    padding-bottom: 60px;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-#main-content {
-    flex: 1;
-    padding: 20px;
+/* =================================================================
+   앨범 격자 스타일
+================================================================= */
+
+/* 앨범 아이템들을 담는 컨테이너 */
+#album-grid {
+    display: grid;
+    /* 10x3 그리드 레이아웃 설정 */
+    grid-template-columns: repeat(10, 250px);
+    grid-template-rows: repeat(3, 250px);
+    gap: 20px;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
 }
 
-#title {
-    padding-top: 3%;
-    padding-left: 6%;
-    font-size: 3rem;
-    font-weight: 700;
+/* 모달이 활성화될 때 그리드에 적용될 흐림 효과 */
+#album-grid.blurred {
+    filter: blur(20px) brightness(0.5);
 }
 
-#cover-container {
-    display: flex;
-    justify-content: left;
-    align-items: left;
-    padding: 7%;
+/* 개별 앨범 아이템 */
+.album-item {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #333;
 }
 
-#cover {
-    width: 50%;
-    max-width: 700px;
+.album-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-#cover img {
-    width: 90%;
-    border-radius: 20px;
+/* 앨범 아이템에 마우스를 올렸을 때 이미지 확대 효과 */
+.album-item:hover img {
+    transform: scale(1.1);
 }
 
-#info {
+/* 앨범 정보 오버레이 (마우스 호버 시 나타남) */
+.album-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    margin-left: 20px;
-    margin-top: 5%;
-    width: 60%;
-}
-
-#artist {
-    font-size: 2.5rem;
-    font-weight: 400;
-}
-
-#song {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin-bottom: 20px;
-}
-
-button {
-    background-color: var(--text-color);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    cursor: pointer;
-}
-
-button svg {
-    width: 28px;
-    height: 28px;
-    fill: var(--background-color);
-}
-
-/* 링크 스타일 */
-a {
-    text-decoration: none;
-    color: var(--text-color); opacity: 0.7;
-    font-size: 1rem;
-    margin-top: 2rem;
-    margin-bottom: 5rem;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-
-#history-container {
-    width: 300px;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    max-height: calc(100vh - 55px);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 10px;
     box-sizing: border-box;
 }
 
-#history-container::-webkit-scrollbar {
-    width: 6px;
+/* 앨범 아이템에 마우스를 올렸을 때 오버레이 표시 */
+.album-item:hover .album-overlay {
+    opacity: 1;
 }
 
-#history-container::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
+.overlay-song {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 5px;
 }
 
-#history-container::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
-}
-
-#history-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-#history-content {
-    display: grid;
-    gap: 10px;
-}
-
-.history-item {
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.history-album-cover {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-    border-radius: 6px;
-}
-
-.history-song-info {
-    flex-grow: 1;
-}
-
-.history-song-name {
+.overlay-artist {
     font-size: 0.9rem;
-    font-weight: 600;
-    margin: 0;
-}
-
-.history-artist-name {
-    font-size: 0.8em;
     font-weight: 300;
     margin: 0;
-    opacity: 0.6;
 }
 
-#show-more {
-    display: none;
-    margin-top: 10px;
-    padding: 5px 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--background-color);
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
 
-/* Footer 스타일 */
-footer {
-    background-color: var(--footer-color);
-    text-align: center;
-    padding: 20px 0;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-}
+/* =================================================================
+   상세 정보 모달 스타일 (*** 디자인 변경 ***)
+================================================================= */
 
-#footer-content a {
-    color: var(--footer-text-color);
-    margin: 0 15px;
-    font-size: 1rem;
-}
-
-#footer-content a:hover {
-    text-decoration: underline;
-}
-
-/* 아이콘 스타일 */
-#footer-content i {
-    margin-right: 8px;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-.animated-background {
+/* 모달 전체 컨테이너 */
+#song-detail-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-        radial-gradient(var(--background-color), var(--footer-color));
-    background-size: 300% 300%;
-    animation:
-        gradientShift 30s ease infinite;
-    z-index: -3000;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.4s ease;
 }
 
-@keyframes gradientShift {
-    0% {
-        background-position: 40% 60%;
-    }
-    10% {
-        background-position: 80% 90%;
-    }
-    40% {
-        background-position: 0% 10%;
-    }
-    45% {
-        background-position: 30% 40%;
-    }
-    65% {
-        background-position: 80% 10%;
-    }
-    80% {
-        background-position: 100% 100%;
-    }
-    100% {
-        background-position: 40% 60%;
-    }
+/* 모달이 숨겨질 때의 스타일 */
+#song-detail-modal.hidden {
+    opacity: 0;
+    pointer-events: none; /* 화면에 보이지 않을 때 클릭 등 이벤트 무시 */
 }
 
+/* 모달 뒷배경: JS로 색상이 동적으로 변경됩니다. */
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #D9D9E2; /* 기본 색상 */
+    transition: background-color 0.5s ease;
+}
 
-/* 모바일 레이아웃 */
-@media (max-width: 600px) {
-    html, body {
-        width: 100%;
-        height: 100%;
-    }
+/* 모달 콘텐츠: 앨범 커버 크기 키움 */
+.modal-content-new {
+    display: grid;
+    grid-template-columns: 450px 1fr; /* 앨범 커버 크기 350px -> 450px로 변경 */
+    gap: 60px; /* 간격 조정 */
+    width: 90%;
+    max-width: 1200px; /* 최대 너비 증가 */
+    height: auto;
+    position: relative;
+    align-items: center;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+}
 
-    body {
-        flex-direction: column;
-        padding-bottom: 80px;
-        overflow: auto;
-    }
+.modal-left {
+    width: 100%;
+    height: auto;
+}
 
-    #main-content {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 20px 5%;
-    }
+#modal-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    /* 이미지 로딩을 감지하기 위해 crossOrigin 속성 필요 */
+    crossorigin: "Anonymous";
+}
 
-    #title {
+/* 모달 오른쪽 정보 섹션 */
+.modal-right {
+    background-color: transparent;
+    padding: 0;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    transition: color 0.5s ease;
+}
+
+/* 아티스트 이름 스타일 */
+#modal-artist-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0 0 4px 0;
+    color: #333;
+}
+
+/* 곡 제목 스타일 */
+#modal-song-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+}
+
+/* 앨범 정보 스타일 추가 */
+#modal-album-info {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 16px 0 0 0;
+    color: #555;
+}
+
+/* 플레이어 컨트롤 */
+.player-controls {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* 재생/일시정지 버튼 */
+#play-pause-btn {
+    background-color: transparent;
+    border: none;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    cursor: pointer;
+    padding: 0;
+}
+
+#play-pause-btn:hover svg {
+    transform: scale(1.1);
+}
+
+#play-pause-btn svg {
+    fill: #000;
+    width: 48px;
+    height: 48px;
+    transition: transform 0.2s ease, fill 0.5s ease;
+}
+
+/* 애플 뮤직 링크 */
+#modal-apple-music-link {
+    background-color: transparent;
+    color: #555;
+    text-decoration: none;
+    padding: 0;
+    border-radius: 0;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.5s ease;
+}
+
+#modal-apple-music-link:hover {
+    color: #000;
+}
+
+/* 모달 닫기 버튼 */
+.modal-close-btn {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    background: rgba(0,0,0,0.1);
+    border: none;
+    color: #000;
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    z-index: 10;
+    cursor: pointer;
+    line-height: 40px;
+    text-align: center;
+    transition: background-color 0.2s ease, color 0.5s ease;
+}
+
+.modal-close-btn:hover {
+    background: rgba(0,0,0,0.2);
+}
+
+/* --- 배경이 어두울 때 적용될 스타일 --- */
+.light-text #modal-artist-name,
+.light-text #modal-album-info,
+.light-text #modal-apple-music-link {
+    color: #eee;
+}
+
+.light-text #modal-song-title {
+    color: #fff;
+}
+
+.light-text #modal-apple-music-link:hover {
+    color: #fff;
+}
+
+.light-text #play-pause-btn svg {
+    fill: #fff;
+}
+
+.light-text.modal-close-btn {
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.light-text.modal-close-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* ... 반응형 스타일은 그대로 유지 ... */
+@media (max-width: 768px) {
+    .modal-content-new {
+        grid-template-columns: 1fr; /* 세로로 쌓이도록 변경 */
+        grid-template-rows: auto auto;
+        gap: 30px;
         text-align: center;
-        padding: 0;
-        margin-top: 10%;
-        margin-bottom: 15%;
-        font-size: 2.5rem;
+        max-width: 90vw;
     }
-
-    #cover-container {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        padding: 0;
-    }
-
-    #cover {
-        width: 90%;
-        max-width: 300px;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: center;
-    }
-
-    #cover img {
-        width: 100%;
-    }
-
-    #info {
-        width: 90%;
-        max-width: 300px;
-        align-items: flex-start;
-        text-align: left;
+    
+    #modal-cover {
+        max-width: 70vw;
         margin: 0 auto;
-        padding: 0;
     }
 
-    #artist {
-        font-size: 1.7rem;
-        margin-bottom: 5px;
-    }
-
-    #song {
-        font-size: 2.7rem;
-        margin-bottom: 15px;
-    }
-
-    #history-container {
-        width: 100%;
-        max-height: none;
-        padding: 20px 5%;
-        margin-top: 30px;
-        padding-bottom: 80px;
-        overflow-y: visible;
-        box-sizing: border-box;
-    }
-    
-    #history-content {
-        display: grid;
-        gap: 10px;
-        grid-template-columns: 1fr;
-    }
-
-    .history-item {
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    .history-album-cover {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-        border-radius: 8px;
-    }
-    
-    .history-song-info {
-        flex-grow: 1;
-    }
-
-    #history-content .history-item:nth-child(n+6) {
-        display: none;
-    }
-
-    #history-content.show-all .history-item:nth-child(n+6) {
-        display: flex;
-    }
-
-    #show-more {
-        display: block;
-        margin: 20px auto 0;
-        width: 90%;
-        max-width: 70px;
-        max-height: 35px;
-    }
-
-    #button {
-        align-self: flex-start;
-        margin-bottom: 15px;
-    }
-
-    a {
-        align-self: flex-start;
-        margin-top: 0;
-    }
-
-    footer {
-        padding: 15px 0;
-        position: unset;
-    }
-
-    #footer-content a {
-        margin: 0 10px;
-        font-size: 0.9rem;
-    }
-}
-
-/* 태블릿 레이아웃 */
-@media (min-width: 601px) and (max-width: 1024px) {
-    html, body {
-        width: 100%;
-        height: 100%;
-    }
-
-    body {
-        flex-direction: column;
-        padding-bottom: 80px;
-        overflow: auto;
-    }
-
-    #main-content {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 20px 5%;
-    }
-
-    #title {
+    .modal-right {
+        align-items: center;
         text-align: center;
-        padding: 0;
-        margin-top: 10%;
-        margin-bottom: 10%;
-        font-size: 2.5rem;
-    }
-
-    #cover-container {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: center;
-        width: 100%;
-        padding: 0;
-    }
-
-    #cover {
-        width: 45%;
-        max-width: 300px;
-        margin-bottom: 20px;
-        margin-right: 5%;
-    }
-
-    #cover img {
-        width: 100%;
-    }
-
-    #info {
-        width: 45%;
-        max-width: 300px;
-        align-items: flex-start;
-        text-align: left;
-        margin: 0;
-        padding-top: 50px;
-    }
-
-    #artist {
-        font-size: 1.8rem;
-        margin-bottom: 5px;
-    }
-
-    #song {
-        font-size: 3rem;
-        margin-bottom: 15px;
-    }
-
-    #history-container {
-        width: 100%;
-        max-height: none;
-        padding: 20px 5%;
-        margin-top: 30px;
-        padding-bottom: 80px;
-        overflow-y: visible;
-        box-sizing: border-box;
-    }
-    
-    #history-content {
-        display: grid;
-        gap: 10px;
-        grid-template-columns: 1fr;
-    }
-
-    .history-item {
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    .history-album-cover {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-        border-radius: 8px;
-    }
-    
-    .history-song-info {
-        flex-grow: 1;
-    }
-
-    #history-content .history-item:nth-child(n+6) {
-        display: none;
-    }
-
-    #history-content.show-all .history-item:nth-child(n+6) {
-        display: flex;
-    }
-
-    #show-more {
-        display: block;
-        margin: 20px auto 0;
-        width: 90%;
-        max-width: 70px;
-        max-height: 35px;
-    }
-
-    #button {
-        align-self: flex-start;
-        margin-bottom: 15px;
-    }
-
-    a {
-        align-self: flex-start;
-        margin-top: 0;
-    }
-
-    footer {
-        padding: 15px 0;
-        position: unset;
-    }
-
-    #footer-content a {
-        margin: 0 10px;
-        font-size: 0.9rem;
     }
 }
 
-@media (min-width: 601px) {
-    #history-container {
-        opacity: 0.3;
-        transition: opacity 0.3s ease;
-    }
 
-    #history-container:hover {
-        opacity: 1;
-    }
+/* =================================================================
+   반응형 디자인 (Mobile)
+================================================================= */
+
+@media (max-width: 768px) {
+    #album-grid {
+    display: grid;
+    /* 10x3 그리드 레이아웃 설정 */
+    grid-template-columns: repeat(5, 150px);
+    grid-template-rows: repeat(6, 150px);
+    gap: 20px;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
 }
 
-@media (min-width: 2100px) {
-    #cover-container {
-        margin-top: 3%;
-    }
-
-    #artist {
-        font-size: 3rem;
-        font-weight: 400;
-    }
-    
-    #song {
-        font-size: 4.5rem;
-        font-weight: 900;
-        margin-bottom: 20px;
-    }
-}
-
-@media (min-width: 2900px) {
-    #title {
-        font-size: 5rem;
-    }
-
-    #cover {
-        width: 50%;
-        max-width: 1200px;
-    }
-
-    #cover-container {
-        margin-top: 2%;
-    }
-
-    #artist {
-        font-size: 5rem;
-        font-weight: 400;
-    }
-    
-    #song {
-        font-size: 7rem;
-        font-weight: 900;
-        margin-bottom: 40px;
-    }
-
-    button {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 15px;
-    }
-
-    button svg {
-        width: 45px;
-        height: 45px;
-    }
-
-    a {
-        text-decoration: none;
-        color: var(--text-color); opacity: 0.7;
-        font-size: 1.7rem;
-        margin-top: 2rem;
-        margin-bottom: 5rem;
+    .modal-right {
+        align-items: center;
+        text-align: center;
     }
 }
