@@ -7,23 +7,17 @@ body {
     margin: 0;
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
-    /* 콘텐츠를 수직/수평 중앙에 배치합니다. */
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
 }
 
-/* 앨범 아이템이 나타날 때의 애니메이션 정의 */
 @keyframes item-appear {
     from {
         opacity: 0;
-        transform: translateY(20px); /* 아래쪽에서 시작 */
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0); /* 제자리로 이동 */
+        transform: translateY(0);
     }
 }
 
@@ -31,33 +25,26 @@ body {
    앨범 격자 스타일
 ================================================================= */
 
-/* 앨범 아이템들을 담는 컨테이너 */
 #album-grid {
     display: grid;
-    /* 10x3 그리드 레이아웃 설정 */
     grid-template-columns: repeat(10, 250px);
     grid-template-rows: repeat(3, 250px);
     gap: 20px;
-    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
     touch-action: none;
 }
 
-/* 모달이 활성화될 때 그리드에 적용될 흐림 효과 */
 #album-grid.blurred {
     filter: blur(20px) brightness(0.5);
 }
 
-/* 개별 앨범 아이템 */
 .album-item {
     position: relative;
     cursor: pointer;
     border-radius: 8px;
     overflow: hidden;
     background-color: #333;
-
-    /* ▼▼▼ 애니메이션 적용을 위한 코드 추가 ▼▼▼ */
-    opacity: 0; /* 시작 시 투명하게 */
-    /* 애니메이션: 이름, 지속시간, 타이밍함수, 종료상태 */
+    opacity: 0;
     animation: item-appear 0.5s ease-out forwards;
 }
 
@@ -68,12 +55,10 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* 앨범 아이템에 마우스를 올렸을 때 이미지 확대 효과 */
 .album-item:hover img {
     transform: scale(1.1);
 }
 
-/* 앨범 정보 오버레이 (마우스 호버 시 나타남) */
 .album-overlay {
     position: absolute;
     top: 0;
@@ -93,7 +78,6 @@ body {
     box-sizing: border-box;
 }
 
-/* 앨범 아이템에 마우스를 올렸을 때 오버레이 표시 */
 .album-item:hover .album-overlay {
     opacity: 1;
 }
@@ -110,12 +94,10 @@ body {
     margin: 0;
 }
 
-
 /* =================================================================
-   상세 정보 모달 스타일 (*** 디자인 변경 ***)
+   상세 정보 모달 스타일
 ================================================================= */
 
-/* 모달 전체 컨테이너 */
 #song-detail-modal {
     position: fixed;
     top: 0;
@@ -123,20 +105,15 @@ body {
     width: 100%;
     height: 100%;
     z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     opacity: 1;
     transition: opacity 0.4s ease;
 }
 
-/* 모달이 숨겨질 때의 스타일 */
 #song-detail-modal.hidden {
     opacity: 0;
-    pointer-events: none; /* 화면에 보이지 않을 때 클릭 등 이벤트 무시 */
+    pointer-events: none;
 }
 
-/* 모달 뒷배경: JS로 색상이 동적으로 변경됩니다. */
 .modal-backdrop {
     position: absolute;
     top: 0;
@@ -145,15 +122,18 @@ body {
     height: 100%;
 }
 
-/* 모달 콘텐츠: 앨범 커버 크기 키움 */
 .modal-content-new {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
     display: grid;
-    grid-template-columns: 450px 1fr; /* 앨범 커버 크기 350px -> 450px로 변경 */
-    gap: 60px; /* 간격 조정 */
+    grid-template-columns: 450px 1fr;
+    gap: 60px;
     width: 90%;
-    max-width: 1200px; /* 최대 너비 증가 */
+    max-width: 1200px;
     height: auto;
-    position: relative;
     align-items: center;
     box-shadow: none;
     border-radius: 0;
@@ -171,11 +151,9 @@ body {
     object-fit: cover;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    /* 이미지 로딩을 감지하기 위해 crossOrigin 속성 필요 */
     crossorigin: "Anonymous";
 }
 
-/* 모달 오른쪽 정보 섹션 */
 .modal-right {
     background-color: transparent;
     padding: 0;
@@ -187,15 +165,13 @@ body {
     transition: color 0.5s ease;
 }
 
-/* 아티스트 이름 스타일 */
 #modal-artist-name {
     font-size: 1.2rem;
     font-weight: 500;
     margin: 0 0 4px 0;
-    color: #333;
+    color: #2a2a2a;
 }
 
-/* 곡 제목 스타일 */
 #modal-song-title {
     font-size: 3rem;
     font-weight: 800;
@@ -203,15 +179,13 @@ body {
     margin: 0;
 }
 
-/* 앨범 정보 스타일 추가 */
 #modal-album-info {
     font-size: 1rem;
     font-weight: 400;
     margin: 16px 0 0 0;
-    color: #555;
+    color: #2a2a2a;
 }
 
-/* 플레이어 컨트롤 */
 .player-controls {
     margin-top: 40px;
     display: flex;
@@ -219,7 +193,6 @@ body {
     gap: 30px;
 }
 
-/* 재생/일시정지 버튼 */
 #play-pause-btn {
     background-color: transparent;
     border: none;
@@ -241,10 +214,9 @@ body {
     transition: transform 0.2s ease, fill 0.5s ease;
 }
 
-/* 애플 뮤직 링크 */
 #modal-apple-music-link {
     background-color: transparent;
-    color: #555;
+    color: #2a2a2a;
     text-decoration: none;
     padding: 0;
     border-radius: 0;
@@ -257,7 +229,6 @@ body {
     color: #000;
 }
 
-/* 모달 닫기 버튼 */
 .modal-close-btn {
     position: fixed;
     top: 30px;
@@ -280,7 +251,6 @@ body {
     background: rgba(0,0,0,0.2);
 }
 
-/* --- 배경이 어두울 때 적용될 스타일 --- */
 .light-text #modal-artist-name,
 .light-text #modal-album-info,
 .light-text #modal-apple-music-link {
@@ -308,14 +278,58 @@ body {
     background: rgba(255,255,255,0.3);
 }
 
-/* ... 반응형 스타일은 그대로 유지 ... */
+/* =================================================================
+   반응형 디자인 (Mobile)
+================================================================= */
+
 @media (max-width: 768px) {
+    /* ▼▼▼ 모바일 레이아웃 전체 수정 ▼▼▼ */
+
+    /* body를 flex 중앙 정렬 컨테이너로 사용합니다. */
+    body {
+        display: flex;
+        align-items: center;
+    }
+
+    /* 앨범 목록을 가로 스크롤 형태로 변경합니다. */
+    #album-grid {
+        display: flex; /* Flexbox 레이아웃으로 변경 */
+        flex-wrap: nowrap; /* 아이템이 한 줄로만 나열되도록 설정 */
+        overflow-x: auto; /* x축으로 넘칠 경우 스크롤 생성 */
+        overflow-y: hidden; /* y축 스크롤은 숨김 */
+        
+        /* 기존 grid 속성 제거 */
+        gap: 15px;
+        padding: 0 20px; /* 좌우 패딩 추가 */
+        width: 100%;
+        
+        /* 스크롤바 숨기기 (선택 사항) */
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+    #album-grid::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    /* 가로 스크롤 목록에 있는 개별 앨범 아이템 스타일 */
+    .album-item {
+        width: 200px; /* 너비 고정 */
+        height: 200px; /* 높이 고정 */
+        flex-shrink: 0; /* 아이템이 작아지지 않도록 설정 */
+    }
+    /* ▲▲▲ 모바일 레이아웃 수정 완료 ▲▲▲ */
+
+    /* 모바일 모달 레이아웃: 이전과 동일하게 유지됩니다. */
     .modal-content-new {
-        grid-template-columns: 1fr; /* 세로로 쌓이도록 변경 */
+        grid-template-columns: 1fr;
         grid-template-rows: auto auto;
         gap: 30px;
         text-align: center;
         max-width: 90vw;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 20px;
+        box-sizing: border-box;
     }
     
     #modal-cover {
@@ -327,25 +341,18 @@ body {
         align-items: center;
         text-align: center;
     }
-}
 
+    #modal-song-title {
+        font-size: 1.8rem;
+        font-weight: 500;
+    }
+    #modal-artist-name {
+        font-size: 0.8rem;
+        font-weight: 400;
+    }
 
-/* =================================================================
-   반응형 디자인 (Mobile)
-================================================================= */
-
-@media (max-width: 768px) {
-    #album-grid {
-    display: grid;
-    /* 10x3 그리드 레이아웃 설정 */
-    grid-template-columns: repeat(4, 180px);
-    grid-template-rows: repeat(7, 180px);
-    gap: 20px;
-    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
-}
-
-    .modal-right {
-        align-items: center;
-        text-align: center;
+    .modal-close-btn {
+        top: 20px;
+        right: 20px;
     }
 }
