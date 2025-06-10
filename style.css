@@ -31,7 +31,7 @@ body {
     grid-template-rows: repeat(3, 250px);
     gap: 20px;
     transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
-    touch-action: none;
+    touch-action: none; /* 데스크톱의 커스텀 패닝을 위해 유지 */
 }
 
 #album-grid.blurred {
@@ -283,13 +283,11 @@ body {
 ================================================================= */
 
 @media (max-width: 768px) {
-    /* ▼▼▼ 수정된 부분 ▼▼▼ */
     body {
         display: flex;
         align-items: center;
-        overflow: auto; /* 모바일에서 스크롤이 가능하도록 변경합니다. */
+        overflow: auto;
     }
-    /* ▲▲▲ 여기까지 수정 ▲▲▲ */
 
     #album-grid {
         display: flex;
@@ -301,6 +299,7 @@ body {
         width: 100%;
         -ms-overflow-style: none;
         scrollbar-width: none;
+        touch-action: auto; /* ▼▼▼ 바로 이 한 줄이 문제를 해결합니다! ▼▼▼ */
     }
     #album-grid::-webkit-scrollbar {
         display: none;
