@@ -5,7 +5,7 @@
 body {
     background-color: #121212;
     margin: 0;
-    overflow: hidden;
+    overflow: hidden; /* 데스크톱에서는 스크롤을 계속 숨깁니다. */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     min-height: 100vh;
 }
@@ -169,7 +169,7 @@ body {
     font-size: 1.2rem;
     font-weight: 500;
     margin: 0 0 4px 0;
-    color: #2a2a2a;
+    color: #333;
 }
 
 #modal-song-title {
@@ -183,7 +183,7 @@ body {
     font-size: 1rem;
     font-weight: 400;
     margin: 16px 0 0 0;
-    color: #2a2a2a;
+    color: #555;
 }
 
 .player-controls {
@@ -216,7 +216,7 @@ body {
 
 #modal-apple-music-link {
     background-color: transparent;
-    color: #2a2a2a;
+    color: #555;
     text-decoration: none;
     padding: 0;
     border-radius: 0;
@@ -283,43 +283,35 @@ body {
 ================================================================= */
 
 @media (max-width: 768px) {
-    /* ▼▼▼ 모바일 레이아웃 전체 수정 ▼▼▼ */
-
-    /* body를 flex 중앙 정렬 컨테이너로 사용합니다. */
+    /* ▼▼▼ 수정된 부분 ▼▼▼ */
     body {
         display: flex;
         align-items: center;
+        overflow: auto; /* 모바일에서 스크롤이 가능하도록 변경합니다. */
     }
+    /* ▲▲▲ 여기까지 수정 ▲▲▲ */
 
-    /* 앨범 목록을 가로 스크롤 형태로 변경합니다. */
     #album-grid {
-        display: flex; /* Flexbox 레이아웃으로 변경 */
-        flex-wrap: nowrap; /* 아이템이 한 줄로만 나열되도록 설정 */
-        overflow-x: auto; /* x축으로 넘칠 경우 스크롤 생성 */
-        overflow-y: hidden; /* y축 스크롤은 숨김 */
-        
-        /* 기존 grid 속성 제거 */
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
         gap: 15px;
-        padding: 0 20px; /* 좌우 패딩 추가 */
+        padding: 0 20px;
         width: 100%;
-        
-        /* 스크롤바 숨기기 (선택 사항) */
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
     #album-grid::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
+        display: none;
     }
 
-    /* 가로 스크롤 목록에 있는 개별 앨범 아이템 스타일 */
     .album-item {
-        width: 200px; /* 너비 고정 */
-        height: 200px; /* 높이 고정 */
-        flex-shrink: 0; /* 아이템이 작아지지 않도록 설정 */
+        width: 160px;
+        height: 160px;
+        flex-shrink: 0;
     }
-    /* ▲▲▲ 모바일 레이아웃 수정 완료 ▲▲▲ */
 
-    /* 모바일 모달 레이아웃: 이전과 동일하게 유지됩니다. */
     .modal-content-new {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto;
@@ -343,12 +335,10 @@ body {
     }
 
     #modal-song-title {
-        font-size: 1.8rem;
-        font-weight: 500;
+        font-size: 2.2rem;
     }
     #modal-artist-name {
-        font-size: 0.8rem;
-        font-weight: 400;
+        font-size: 1rem;
     }
 
     .modal-close-btn {
