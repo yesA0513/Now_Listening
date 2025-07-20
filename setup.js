@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const grid = document.getElementById('album-grid');
 
-    // ▼▼▼ 화면 너비에 따라 다른 기능 적용 ▼▼▼
     if (window.innerWidth > 768) {
         // --- 데스크톱: 마우스 패닝 효과 ---
         const panIntensityX = 450;
@@ -37,14 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.style.transform = `translate(${panX}px, ${panY}px)`;
         });
     }
-    // ▲▲▲ 데스크톱 기능 종료 ▲▲▲
 });
 
 // --- 데이터 처리 및 렌더링 ---
 async function fetchMusicData() {
-    const apiUrl = "https://simple-proxy.taein.workers.dev/?destination=https://yuntae.in/api/music/recent/noa?size=30";
+    const apiUrl = "https://yuntae.in/api/music/recent";
+    const userToken = "AuX+Y68jIJ4ojOSi9EpcKz9828+u2CwX1JDxKVnly4TkTKoz8SaIvrQA5rmLHdqVc4wVgMSLGEuqnhKZ0FAcldthmXplETm8tNFATc4V+12u3szBQcCvV9yhtLA/DZMLupw9kFTdlVQAk31dM3yi7myTWy0Yn2RUluSGjGGdsxahpKMscuc7Pmow4PN4qbCc5sG/E9WLL2ZwMjVairmY7CEDP1p+v1kWkHnnMVxSql38OI6xzw=="; // 여기에 실제 user-token 값을 넣어주세요.
+
     try {
-        const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'user-token': userToken
+            }
+        });
         const data = await response.json();
         allSongs = data.data;
         while (allSongs.length > 0 && allSongs.length < 30) {
@@ -52,7 +58,8 @@ async function fetchMusicData() {
         }
         allSongs = allSongs.slice(0, 30);
         renderInitialGrid();
-    } catch (error) {
+    }
+    catch (error) {
         console.error("음악 데이터 로딩 실패:", error);
     }
 }
