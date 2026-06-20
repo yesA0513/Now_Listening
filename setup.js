@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- 데이터 처리 및 렌더링 ---
 async function fetchMusicData() {
     const apiUrl = "https://yuntae.in/api/music/recent";
-    const userToken = "As/7rThEu36hoBYtl0EA2nOswDjqdGWpltAq98DSGkJztQUWboLS/j1f5ZnndDaRs1iyb9tIuVMcDYdWIZ4wRzZCHGVES7VOGNwhsKPW8kkGRAX8RQrqG105CaL+rIM/MxSsSdeOX/9fmF8ZKtwSZLe6sTDFKIPXbQLbWgsiDQB2854OIT1rLWfEj2FtxcqCZvrCrhAbAZPVkHvnJHohThG6CTsnGed0bV3mUgWNlUmvA1eMKQ=="; // 여기에 실제 user-token 값을 넣어주세요.
+    const userToken = "0.AleOoXV+HXS+ORjKfDxJRDvOg3ly8QE/EM06jfmaang2ByTeDjAAGm/Nzq9hisarxEsfLpULnyJq3DOcsEnwgvETXpBEiU8c4WvdpM+ridnA7EE/UM+fWE5bq8M13WOGMoHHLFkBmHVuKKvQJABDOfs2TFh0Q544HLyVk/W0Raojgq+CHgQhBtSUVt0cKmaa5imvE4XrDDFCaM6CvsOoQZ6HwMG9pg6ONGp3GegCwBKBkYrIaw=="; //media-user-token.
 
     try {
         const response = await fetch(apiUrl, {
