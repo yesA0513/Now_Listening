@@ -94,7 +94,7 @@ function createAlbumItem(song, index) {
         item.addEventListener('click', () => showSongDetailModal(song));
     } else {
         // 데스크톱: 중앙 이동 애니메이션 후 모달 표시
-        item.addEventListener('click', (event) => centerAndShowModal(event, song));
+        item.addEventListener('click', () => showSongDetailModal(song));
     }
     // ▲▲▲ 이벤트 분리 완료 ▲▲▲
 

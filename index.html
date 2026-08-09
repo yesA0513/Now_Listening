@@ -8,45 +8,45 @@
     <meta property="og:title" content="Now Listening">
     <meta property="og:description" content="@yesA0513">
     <meta property="og:image" content="img/Preview.png">
+    <style>#album-grid { transform: none !important; }</style>
 </head>
 <body>
-
     <svg style="display: none;">
-        <symbol id="icon-play" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-        </symbol>
-        <symbol id="icon-pause" viewBox="0 0 24 24">
-            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-        </symbol>
+        <symbol id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+        <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></symbol>
     </svg>
 
-    <div id="album-grid"></div>
+    <main class="app-shell">
+        <header class="site-header">
+            <a class="brand" href="/" aria-label="Now Listening home"><span class="brand-mark" aria-hidden="true"></span><span>NOW LISTENING</span></a>
+            <p class="header-note">A small collection of recent plays</p>
+        </header>
+        <section class="library" aria-labelledby="library-title">
+            <div class="library-heading">
+                <div><p class="eyebrow">SOUNDTRACK</p><h1 id="library-title">Recently played.</h1></div>
+                <p class="library-count">30 tracks</p>
+            </div>
+            <div id="album-grid" aria-live="polite"></div>
+        </section>
+    </main>
 
     <div id="song-detail-modal" class="hidden">
         <div class="modal-backdrop"></div>
-        <button class="modal-close-btn">&times;</button>
+        <button class="modal-close-btn" aria-label="닫기">&times;</button>
         <div class="modal-content-new">
-            
-            <div class="modal-left">
-                <img id="modal-cover" src="" alt="Album Cover" crossorigin="anonymous">
-            </div>
-
+            <div class="modal-left"><img id="modal-cover" src="" alt="Album Cover" crossorigin="anonymous"></div>
             <div class="modal-right">
                 <p id="modal-artist-name"></p>
                 <h2 id="modal-song-title"></h2>
                 <p id="modal-album-info"></p>
-
                 <div class="player-controls">
                     <audio id="modal-audio"></audio>
-                    <button id="play-pause-btn">
-                        <svg width="24" height="24"><use href="#icon-play"></use></svg>
-                    </button>
-                    <a id="modal-apple-music-link" href="#" target="_blank">Apple Music에서 보기</a>
+                    <button id="play-pause-btn" aria-label="미리듣기 재생"><svg width="24" height="24"><use href="#icon-play"></use></svg></button>
+                    <a id="modal-apple-music-link" href="#" target="_blank" rel="noreferrer">Apple Music에서 듣기 <span aria-hidden="true">↗</span></a>
                 </div>
             </div>
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <script src="setup.js"></script>
 </body>
