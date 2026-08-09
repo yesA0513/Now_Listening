@@ -26,6 +26,12 @@ function updatePersistentPlayer(song) {
     document.getElementById('persistent-artist').textContent = attributes.artistName;
 }
 
+function updateVolumeSlider(control) {
+    const percentage = Math.round(Number(control.value) * 100);
+    control.style.setProperty('--volume', `${percentage}%`);
+    control.style.background = `linear-gradient(to right, var(--modal-accent) ${percentage}%, rgba(255,255,255,.18) ${percentage}%)`;
+}
+
 function setPlaybackAmbient(isPlaying) {
     const page = document.body;
     page.classList.toggle('is-playing', isPlaying);
@@ -54,6 +60,7 @@ function moveToAdjacentSong(offset, keepModalOpen = false) {
     if (!keepModalOpen) {
         document.getElementById('song-detail-modal').classList.add('hidden');
         document.getElementById('album-grid').classList.remove('blurred');
+        document.body.classList.remove('modal-open');
     }
     if (wasPlaying && currentAudio) {
         currentAudio.play().catch(error => console.warn('Preview playback is unavailable.', error));
@@ -99,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('modal-next').addEventListener('click', () => moveToAdjacentSong(1, true));
     document.getElementById('volume-control').addEventListener('input', (event) => {
         playbackVolume = Number(event.target.value);
-        event.target.style.setProperty('--volume', `${playbackVolume * 100}%`);
+        updateVolumeSlider(event.target);
         if (currentAudio) currentAudio.volume = playbackVolume;
     });
     document.getElementById('persistent-previous').addEventListener('click', () => moveToAdjacentSong(-1));
@@ -112,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('persistent-player').addEventListener('click', (event) => {
         if (event.target.closest('button')) return;
         document.getElementById('album-grid').classList.add('blurred');
+        document.body.classList.add('modal-open');
         document.getElementById('song-detail-modal').classList.remove('hidden');
     });
 
@@ -317,7 +325,7 @@ function showSongDetailModal(song, songIndex = allSongs.indexOf(song), transitio
     currentTimeLabel.textContent = '0:00';
     durationTimeLabel.textContent = '0:00';
     volumeControl.value = playbackVolume;
-    volumeControl.style.setProperty('--volume', `${playbackVolume * 100}%`);
+    updateVolumeSlider(volumeControl);
     currentAudio.volume = playbackVolume;
     const playIcon = '<svg width="48" height="48"><use href="#icon-play"></use></svg>';
     const pauseIcon = '<svg width="48" height="48"><use href="#icon-pause"></use></svg>';
@@ -360,10 +368,12 @@ function showSongDetailModal(song, songIndex = allSongs.indexOf(song), transitio
     };
 
     document.getElementById('album-grid').classList.add('blurred');
+    document.body.classList.add('modal-open');
     modal.classList.remove('hidden');
 }
 
 function closeSongDetailModal() {
     document.getElementById('album-grid').classList.remove('blurred');
+    document.body.classList.remove('modal-open');
     document.getElementById('song-detail-modal').classList.add('hidden');
 }
