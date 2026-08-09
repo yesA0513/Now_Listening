@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else currentAudio.pause();
     });
     document.getElementById('persistent-player').addEventListener('click', (event) => {
-        if (event.target.closest('button') || currentSongIndex < 0) return;
+        if (event.target.closest('button')) return;
         document.getElementById('album-grid').classList.add('blurred');
         document.getElementById('song-detail-modal').classList.remove('hidden');
     });

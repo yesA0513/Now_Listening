@@ -55,7 +55,13 @@
         .persistent-controls { padding:3px; border:1px solid rgba(255,255,255,.1); border-radius:99px; background:rgba(255,255,255,.06); box-shadow:inset 0 1px 0 rgba(255,255,255,.12); }.persistent-controls button:hover { background:rgba(255,255,255,.14); }.persistent-controls #persistent-play { border:1px solid rgba(255,255,255,.25); background:linear-gradient(145deg,rgba(255,255,255,.95),var(--accent)); box-shadow:inset 0 1px 0 rgba(255,255,255,.7); }
         :root { --glass-radius-card:24px; --glass-radius-panel:16px; --glass-radius-control:12px; }
         .modal-content-new,.persistent-player { border-radius:var(--glass-radius-card); }.modal-left { border-radius:20px; }#modal-cover { border-radius:16px; }.track-timeline,.player-utility { border-radius:var(--glass-radius-panel); }.volume-control,.modal-external-link { border-radius:var(--glass-radius-control); }#persistent-cover { border-radius:var(--glass-radius-control); }.modal-close-btn { border-radius:50%; }
-        @media (max-width:620px) { .modal-left { padding:9px; }.track-timeline,.player-utility { width:100%; } }
+        @media (max-width:620px) {
+            #song-detail-modal { overflow:hidden; padding:calc(env(safe-area-inset-top, 0px) + 62px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px); }
+            .modal-backdrop { position:fixed; }
+            .modal-content-new { position:relative; top:auto; left:auto; width:100%; max-height:calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 78px); gap:10px; padding:14px; margin:0 auto; transform:none; overflow:hidden; }
+            .modal-left { padding:7px; }.cover-label { margin-bottom:5px; }.preview-label { margin-top:6px; }#modal-cover { width:min(100%,25vh,205px); margin:0 auto; }.modal-kicker { margin:0 0 5px; }#modal-artist-name { margin-bottom:5px; }#modal-song-title { font-size:clamp(1.7rem,7vw,2.05rem); }#modal-album-info { margin-top:6px; font-size:.82rem; }.track-timeline { width:100%; margin-top:10px; padding:8px 10px 6px; }.player-controls { margin-top:7px; }.player-utility { width:100%; margin-top:7px; }.player-utility .volume-control,#song-detail-modal #modal-apple-music-link.modal-external-link { height:30px; min-height:30px; }.volume-slider { width:64px; }
+            .modal-close-btn { position:fixed; top:calc(env(safe-area-inset-top, 0px) + 72px); right:28px; }
+        }
     </style>
 </head>
 <body>
