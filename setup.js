@@ -5,6 +5,9 @@ let currentAudio = null;
 let playPauseBtn = null;
 let currentSongIndex = -1;
 let currentArtworkRgb = [16, 17, 20];
+let renderedAmbientRgb = [16, 17, 20];
+let ambientAnimationFrame = null;
+let playbackVolume = 0.8;
 
 const playIcon = '<svg width="48" height="48"><use href="#icon-play"></use></svg>';
 const pauseIcon = '<svg width="48" height="48"><use href="#icon-pause"></use></svg>';
@@ -25,17 +28,33 @@ function updatePersistentPlayer(song) {
 
 function setPlaybackAmbient(isPlaying) {
     const page = document.body;
-    page.style.setProperty('--now-rgb', currentArtworkRgb.join(','));
     page.classList.toggle('is-playing', isPlaying);
+    if (!isPlaying) return;
+
+    if (ambientAnimationFrame) cancelAnimationFrame(ambientAnimationFrame);
+    const start = [...renderedAmbientRgb];
+    const target = [...currentArtworkRgb];
+    const startedAt = performance.now();
+    const duration = 2800;
+    const animate = (now) => {
+        const progress = Math.min((now - startedAt) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        renderedAmbientRgb = start.map((value, index) => Math.round(value + (target[index] - value) * eased));
+        page.style.setProperty('--now-rgb', renderedAmbientRgb.join(','));
+        if (progress < 1) ambientAnimationFrame = requestAnimationFrame(animate);
+    };
+    ambientAnimationFrame = requestAnimationFrame(animate);
 }
 
-function moveToAdjacentSong(offset) {
+function moveToAdjacentSong(offset, keepModalOpen = false) {
     if (!allSongs.length) return;
     const wasPlaying = currentAudio && !currentAudio.paused;
     currentSongIndex = (currentSongIndex + offset + allSongs.length) % allSongs.length;
-    showSongDetailModal(allSongs[currentSongIndex], currentSongIndex);
-    document.getElementById('song-detail-modal').classList.add('hidden');
-    document.getElementById('album-grid').classList.remove('blurred');
+    showSongDetailModal(allSongs[currentSongIndex], currentSongIndex, offset > 0 ? 'next' : 'previous');
+    if (!keepModalOpen) {
+        document.getElementById('song-detail-modal').classList.add('hidden');
+        document.getElementById('album-grid').classList.remove('blurred');
+    }
     if (wasPlaying && currentAudio) {
         currentAudio.play().catch(error => console.warn('Preview playback is unavailable.', error));
     }
@@ -76,12 +95,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // 모달 닫기 이벤트 설정
     document.querySelector('.modal-close-btn').addEventListener('click', closeSongDetailModal);
     document.querySelector('.modal-backdrop').addEventListener('click', closeSongDetailModal);
+    document.getElementById('modal-previous').addEventListener('click', () => moveToAdjacentSong(-1, true));
+    document.getElementById('modal-next').addEventListener('click', () => moveToAdjacentSong(1, true));
+    document.getElementById('volume-control').addEventListener('input', (event) => {
+        playbackVolume = Number(event.target.value);
+        event.target.style.setProperty('--volume', `${playbackVolume * 100}%`);
+        if (currentAudio) currentAudio.volume = playbackVolume;
+    });
     document.getElementById('persistent-previous').addEventListener('click', () => moveToAdjacentSong(-1));
     document.getElementById('persistent-next').addEventListener('click', () => moveToAdjacentSong(1));
     document.getElementById('persistent-play').addEventListener('click', () => {
         if (!currentAudio || !currentAudio.src) return;
         if (currentAudio.paused) currentAudio.play().catch(error => console.warn('Preview playback is unavailable.', error));
         else currentAudio.pause();
+    });
+    document.getElementById('persistent-player').addEventListener('click', (event) => {
+        if (event.target.closest('button') || currentSongIndex < 0) return;
+        document.getElementById('album-grid').classList.add('blurred');
+        document.getElementById('song-detail-modal').classList.remove('hidden');
     });
 
     document.addEventListener('keydown', (event) => {
@@ -213,12 +244,19 @@ function centerAndShowModal(event, song) {
 }
 
 // --- 모달 제어 함수 (공통) ---
-function showSongDetailModal(song, songIndex = allSongs.indexOf(song)) {
+function showSongDetailModal(song, songIndex = allSongs.indexOf(song), transitionDirection = '') {
     const modal = document.getElementById('song-detail-modal');
     const modalCover = document.getElementById('modal-cover');
     const backdrop = document.querySelector('.modal-backdrop');
     const modalRight = document.querySelector('.modal-right');
     const closeBtn = document.querySelector('.modal-close-btn');
+    const modalContent = document.querySelector('.modal-content-new');
+
+    if (transitionDirection) modalContent.dataset.direction = transitionDirection;
+    else delete modalContent.dataset.direction;
+    modalContent.classList.remove('is-switching');
+    void modalContent.offsetWidth;
+    modalContent.classList.add('is-switching');
 
     currentSongIndex = songIndex;
     updatePersistentPlayer(song);
@@ -264,6 +302,7 @@ function showSongDetailModal(song, songIndex = allSongs.indexOf(song)) {
     const progress = document.getElementById('playback-progress');
     const currentTimeLabel = document.getElementById('current-time');
     const durationTimeLabel = document.getElementById('duration-time');
+    const volumeControl = document.getElementById('volume-control');
     const updateProgress = () => {
         const duration = currentAudio.duration;
         const position = Number.isFinite(duration) && duration > 0 ? currentAudio.currentTime / duration * 100 : 0;
@@ -277,6 +316,9 @@ function showSongDetailModal(song, songIndex = allSongs.indexOf(song)) {
     progress.style.setProperty('--progress', '0%');
     currentTimeLabel.textContent = '0:00';
     durationTimeLabel.textContent = '0:00';
+    volumeControl.value = playbackVolume;
+    volumeControl.style.setProperty('--volume', `${playbackVolume * 100}%`);
+    currentAudio.volume = playbackVolume;
     const playIcon = '<svg width="48" height="48"><use href="#icon-play"></use></svg>';
     const pauseIcon = '<svg width="48" height="48"><use href="#icon-pause"></use></svg>';
     currentAudio.onloadedmetadata = () => {
